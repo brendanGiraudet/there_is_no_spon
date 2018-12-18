@@ -19,32 +19,76 @@ class Player
         {
             string line = Console.ReadLine(); // width characters, each either 0 or .
             tab.Add(line);
-            Console.Error.WriteLine(line + " nbline " + i );
+            //Console.Error.WriteLine(line + " nbline " + i );
         }
         string rep = string.Empty;
+        tab.ForEach(s => {Console.Error.WriteLine(s);});
+        /*tab.ForEach(s => {
+            var line = s.ToList().Select(c => c.ToString()).ToList();
+            line.ForEach(node => {
+                if(node.Equals('0'))
+                {
+                    rep += tab.Current + " " + line.Current + " ";
+                    var rightnode = line.Find(l => l.Equals('0') && line.IndexOf(l) > line.IndexOf(node));
+                    if(rightnode != null)
+                    {
+                        rep += tab.Current + " " + line.IndexOf(rightnode) + " ";
+                    }
+                    Console.WriteLine(rep);
+                }
+            });
+        });*/
+
         for (int i = 0; i < height; i++)
         {
             for (int j = 0; j < width; j++)
             {
-                Console.Error.WriteLine(tab[i][j] + " " + i + " " + j);
                 if(tab[i][j] == '0')
                 {
-                    rep = i + " " + j + " ";
-                    if(i+1 == height || tab[i+1][j] != '0')
+                    rep = j + " " + i + " ";
+                    int k = j+1;
+                    bool find = false;
+                    // coté droite
+                    while (k < width && !find)
                     {
-                        rep += "-1 -1 ";
+                        if(tab[i][k] == '0')
+                        {
+                            find = true;
+                        }
+                        else
+                        {
+                            k++;
+                        }
+                    }
+                    if(find)
+                    {
+                        rep += k + " " + i + " ";
                     }
                     else
                     {
-                        rep += i+1 + " " + j + " ";
-                    }
-                    if(j+1 == width || tab[i][j+1] != '0')
-                    {
                         rep += "-1 -1 ";
+                    }
+                    // en dessous
+                    k = i+1;
+                    find = false;
+                    while (k < height && !find)
+                    {
+                        if(tab[k][j] == '0')
+                        {
+                            find = true;
+                        }
+                        else
+                        {
+                            k++;
+                        }
+                    }
+                    if(find)
+                    {
+                        rep += j + " " + k + " ";
                     }
                     else
                     {
-                        rep += i + " " + j+1 + " ";
+                        rep += "-1 -1 ";
                     }
                     
                     Console.WriteLine(rep);
@@ -57,6 +101,5 @@ class Player
 
 
         // Three coordinates: a node, its right neighbor, its bottom neighbor
-        
     }
 }
